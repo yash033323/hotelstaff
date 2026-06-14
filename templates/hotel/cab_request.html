@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; padding: 20px; }
+        .card { border-radius: 15px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background-color: #0A2342; color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
+        .btn-back { background-color: #0A2342; color: white; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h4>🚗 Cab Booking</h4>
+    <p class="mb-0">Room {{ room.room_number }}</p>
+</div>
+
+<div class="card p-4">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label fw-bold">📍 Pickup Location</label>
+            <input type="text" name="pickup_location" class="form-control" placeholder="Enter pickup location" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">🏁 Destination</label>
+            <input type="text" name="destination" class="form-control" placeholder="Enter destination" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">📅 Date</label>
+            <input type="date" name="date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">⏰ Time</label>
+            <input type="time" name="time" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">👥 Number of People</label>
+            <input type="number" name="people" class="form-control" min="1" max="10" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">📝 Special Note</label>
+            <textarea name="note" class="form-control" rows="2" placeholder="Any special requests..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100 mb-2">🚗 Book Cab</button>
+       <a href="/room/" class="btn btn-back w-100">← Back</a>
+    </form>
+</div>
+
+</body>
+</html>

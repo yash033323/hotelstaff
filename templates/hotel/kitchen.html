@@ -1,0 +1,88 @@
+{% extends 'hotel/base.html' %}
+
+{% block title %}Kitchen Dashboard{% endblock %}
+
+{% block page_title %}🍳 Kitchen Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stats -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h2 class="text-warning">{{ tasks.count }}</h2>
+            <p class="mb-0">🔴 Pending Orders</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h2 class="text-success">{{ completed.count }}</h2>
+            <p class="mb-0">✅ Completed Orders</p>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Orders -->
+<div class="card p-4 mb-4">
+    <h5 class="mb-3">🔴 Pending Food Orders</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Room</th>
+                <th>Items</th>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in tasks %}
+            <tr>
+                <td>Room {{ order.room.room_number }}</td>
+                <td>{{ order.items }}</td>
+                <td>{{ order.created_at|date:"h:i A" }}</td>
+                <td>
+                    <a href="/staff/kitchen/complete/{{ order.id }}/"
+                       class="btn btn-success btn-sm">
+                        ✅ Mark Done
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No pending orders! 🎉</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Completed Orders -->
+<div class="card p-4">
+    <h5 class="mb-3">✅ Completed Orders</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Room</th>
+                <th>Items</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in completed %}
+            <tr>
+                <td>Room {{ order.room.room_number }}</td>
+                <td>{{ order.items }}</td>
+                <td>{{ order.created_at|date:"h:i A" }}</td>
+                <td><span class="badge bg-success">✅ Done</span></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No completed orders yet!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

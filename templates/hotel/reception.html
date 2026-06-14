@@ -1,0 +1,140 @@
+{% extends 'hotel/base.html' %}
+
+{% block title %}Reception Dashboard{% endblock %}
+
+{% block page_title %}👨‍💼 Reception Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stats -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card p-3 text-center">
+            <h2 class="text-success">{{ available_rooms }}</h2>
+            <p class="mb-0">🟢 Available Rooms</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 text-center">
+            <h2 class="text-danger">{{ occupied_rooms }}</h2>
+            <p class="mb-0">🔴 Occupied Rooms</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 text-center">
+            <h2 class="text-warning">{{ cleaning_rooms }}</h2>
+            <p class="mb-0">🟡 Cleaning Rooms</p>
+        </div>
+    </div>
+</div>
+
+<!-- Room Status -->
+<div class="card p-4 mb-4">
+    <h5 class="mb-3">🛏️ All Rooms Status</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Room</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room.room_number }}</td>
+                <td>{{ room.room_type }}</td>
+                <td>₹{{ room.price }}</td>
+                <td>
+                    {% if room.status == 'available' %}
+                        <span class="badge bg-success">🟢 Available</span>
+                    {% elif room.status == 'occupied' %}
+                        <span class="badge bg-danger">🔴 Occupied</span>
+                    {% elif room.status == 'cleaning' %}
+                        <span class="badge bg-warning text-dark">🟡 Cleaning</span>
+                    {% elif room.status == 'maintenance' %}
+                        <span class="badge bg-secondary">🔧 Maintenance</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if room.status == 'available' %}
+                        <a href="/staff/reception/checkin/{{ room.id }}/"
+                           class="btn btn-primary btn-sm">✅ Check In</a>
+                    {% elif room.status == 'occupied' %}
+                        <a href="/staff/reception/checkout/{{ room.id }}/"
+                           class="btn btn-danger btn-sm">🚪 Check Out</a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-sm" disabled>Not Available</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Current Guests -->
+<div class="card p-4 mb-4">
+    <h5 class="mb-3">👤 Current Guests</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Room</th>
+                <th>Check In</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for guest in guests %}
+            <tr>
+                <td>{{ guest.name }}</td>
+                <td>{{ guest.phone }}</td>
+                <td>Room {{ guest.room.room_number }}</td>
+                <td>{{ guest.checkin_date|date:"d M Y h:i A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No current guests!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Guest History -->
+<div class="card p-4">
+    <h5 class="mb-3">📋 Guest History</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Room</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Bill</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for guest in guest_history %}
+            <tr>
+                <td>{{ guest.name }}</td>
+                <td>{{ guest.phone }}</td>
+                <td>Room {{ guest.room.room_number }}</td>
+                <td>{{ guest.checkin_date|date:"d M Y h:i A" }}</td>
+                <td>{{ guest.checkout_date|date:"d M Y h:i A" }}</td>
+                <td>₹{{ guest.total_bill }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No guest history yet!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

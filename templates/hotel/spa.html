@@ -1,0 +1,96 @@
+{% extends 'hotel/base.html' %}
+
+{% block title %}Spa Dashboard{% endblock %}
+
+{% block page_title %}💆 Spa Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stats -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h2 class="text-warning">{{ tasks.count }}</h2>
+            <p class="mb-0">🔴 Pending Bookings</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h2 class="text-success">{{ completed.count }}</h2>
+            <p class="mb-0">✅ Completed Bookings</p>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Bookings -->
+<div class="card p-4 mb-4">
+    <h5 class="mb-3">🔴 Pending Spa Bookings</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Room</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>People</th>
+                <th>Note</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in tasks %}
+            <tr>
+                <td>Room {{ booking.room.room_number }}</td>
+                <td>{{ booking.service_type }}</td>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.time }}</td>
+                <td>{{ booking.people }}</td>
+                <td>{{ booking.note }}</td>
+                <td>
+                    <a href="/staff/spa/complete/{{ booking.id }}/"
+                       class="btn btn-success btn-sm">
+                        ✅ Mark Done
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No pending bookings! 🎉</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Completed Bookings -->
+<div class="card p-4">
+    <h5 class="mb-3">✅ Completed Bookings</h5>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Room</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>People</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in completed %}
+            <tr>
+                <td>Room {{ booking.room.room_number }}</td>
+                <td>{{ booking.service_type }}</td>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.time }}</td>
+                <td>{{ booking.people }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No completed bookings yet!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
