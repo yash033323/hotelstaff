@@ -1,1 +1,1 @@
-web: gunicorn hotelstaff.wsgi --bind 0.0.0.0:$PORT
+web: python manage.py migrate && gunicorn hotelstaff.wsgi --bind 0.0.0.0:8080
